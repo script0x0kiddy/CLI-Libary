@@ -1,7 +1,5 @@
-# Release Notes
-# EN 🇺🇸
+# Release Notes (EN 🇺🇸)
 
-------------------------------------------------------------
 ### Beta v0.1
 #### Program Logic
 
@@ -19,7 +17,7 @@
 
 - ✅ Add the dictionary to the `books` list.
 - ✅ Ask the user what they want to do next.
-
+#
 ### Beta v0.2
 
 #### New Features:
@@ -33,10 +31,11 @@
 - ✅ Added ValueError handling in multiple locations
 - ✅ Added comments throughout the code
 - ✅ Cleaned up visual clutter in the code
+
 ------------------------------------------------------------
 
-# RU 🇷🇺
-------------------------------------------------------------
+# Примечания к выпуску (RU 🇷🇺)
+
 ### Бета v0.1
 #### Логика программы
 
@@ -54,9 +53,7 @@
 
 - ✅ Добавить словарь в список `books`.
 - ✅ Спросить пользователя о дальнейших действиях.
-
-------------------------------------------------------------
-
+# 
 ### Бета v0.2
 #### Новые функции:
 
