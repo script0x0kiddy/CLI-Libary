@@ -1,4 +1,4 @@
-# Beta v0.2
+# Beta v0.3
 
 from time import sleep
 
@@ -39,13 +39,13 @@ while select_main != 5:
 	# Вывести информацию о книгах
 	if select_main == 1:
 		print("1. Вывести все книги")
-		print("2. Фильтровать по авторам")
-		print("3. Фильтровать по статусу прочтения")
+		print("2. Поиск по названию")
+		print("3. Фильтровать по авторам")
+		print("4. Фильтровать по статусу прочтения")
 		print("-------------------------------------")
 
 		select_second = int(input("Выберите пункт: "))
 		count = 0
-
 
 		# Вывести все книги
 		if select_second == 1:
@@ -64,34 +64,60 @@ while select_main != 5:
 				sleep(1)
 			sleep(1)
 
-		# Фильтровать по авторам
 		elif select_second == 2:
+			search_book_name = str(input("Сделайте запрос в поисковик: "))
+			if search_book_name != "":
+				print(f"\n🔎 Поиск: {search_book_name}")
+				print("Возможные варианты: ")
+
+				count = 0
+
+				for i in range(0, len(books)):
+					if search_book_name in books[i]['title']:
+						count += 1
+						print(f"\n📔 Информация о книге №{count}:")
+						print()
+						print(f"Название: {books[i]['title']}")
+						print(f"Автор: {books[i]['author']}")
+						print(f"Год: {books[i]['year']}")
+						print(f"Прочитано: {books[i]['read']}\n")
+					sleep(1)
+				print("---------------------------")
+			else:
+				print("❌ Ошибка. Пустая строка")
+
+		# Фильтровать по авторам
+		elif select_second == 3:
 			
 			author_info = str(input("Введите Имя и Фамилию автора: ")).title()
+			select_author = ""
 			count = 0
 			
 			for i in range(0, len(books)):
-				if author_info in books[i]['author'].title():
+				if author_info == books[i]['author'].title():
 					select_author = books[i]
 
-			print(f"Книги автора: {select_author['author']}")
-			print("-----------------------------------")
+			if select_author != "":
+				print(f"Книги автора: {select_author['author']}")
+				print("-----------------------------------")
 
-			for i in range(0, len(books)):
-				if select_author['author'] in books[i]['author']:
-					count += 1
-					print(f"\n📔 Информация о книге №{count}:")
-					print()
-					print(f"Название: {books[i]['title']}")
-					print(f"Автор: {books[i]['author']}")
-					print(f"Год: {books[i]['year']}")
-					print(f"Прочитано: {books[i]['read']}")
-					sleep(1)
-			print("\n-----------------------------------")
-
+				for i in range(0, len(books)):
+					if select_author['author'] in books[i]['author']:
+						count += 1
+						print(f"\n📔 Информация о книге №{count}:")
+						print()
+						print(f"Название: {books[i]['title']}")
+						print(f"Автор: {books[i]['author']}")
+						print(f"Год: {books[i]['year']}")
+						print(f"Прочитано: {books[i]['read']}")
+						sleep(1)
+				print("\n-----------------------------------")
+			else:
+				print()
+				print("Такого автора нет в Библиотеке!")
 
 		# Фильтровать по статусу прочтения
-		elif select_second == 3:
+		elif select_second == 4:
 			print("1. Вывести прочитанные")
 			print("2. Вывести непрочитанные")
 
@@ -159,10 +185,12 @@ while select_main != 5:
 				print(f"Статус: Непрочитано 📕\n")
 			sleep(1)
 		select_book = int(input("Выберите книгу для смены статуса: "))
+		checker_book = ""
 		print("---------------------------------")
 
 		for j in range(0, len(books)):
 			if select_book - 1 == j:
+				checker_book = "YES"
 				print(f"📔 Название: {books[j]['title']}")
 				
 				if books[j]['read'] == True:
@@ -176,15 +204,19 @@ while select_main != 5:
 					print("---------------------------------")
 					sleep(1)
 
+		if checker_book == "":
+			print("❌ Нет книги с таким №")
+
 		print("Примечание: Если книга была 'прочитана', статус изменится на 'Непрочитано' и наоборот.\n")
 
 	# Удалить книгу
 	elif select_main == 4:
 		try:
 			del_book = int(input("Введите № книги для удаления: "))
+			checker_book = ""
 			for book in range(0, len(books)):
 				if del_book - 1 == book:
-
+					checker_book = "YES"
 					print("Будет удалена следующая книга: \n")
 					print(f"📔 Информация о книге №{book + 1}:\n")
 					sleep(1)
@@ -207,6 +239,9 @@ while select_main != 5:
 					else:
 						print("Вводите только Y или N.")
 						sleep(1)
+
+			if checker_book == "":
+				print("❌ Нет книги с таким №")
 
 		except ValueError:
 			print("❌ Ошибка. Вы ввели не цифры.")
