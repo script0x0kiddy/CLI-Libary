@@ -1,24 +1,23 @@
-# Beta v0.4
-# ✅ Задача 1. Исправить ошибку в info_book и передавать данные явно
-# ✅ Задача 2. Убрать try/except и сделать безопасный ввод без падений
-# Задача 3. Убрать дублирование кода — создать вспомогательные функции
+# ✅ Задача 1. Защита от дубликатов при добавлении книги
+# ✅ Задача 2. Статистика: уникальные авторы и сортировка книг
 
 from time import sleep
 
 THE_LIBRARY = [
-			{"title" : "Бусидо", "author" : "Юдзан Дайдодзи", "year" : "1998", "read" : False},
-			{"title" : "Хагакурэ", "author" : "Юдзан Дайдодзи", "year" : "2000", "read" : False},
-			{"title" : "Метро 2033", "author" : "Дмитрий Глуховский", "year" : "2005", "read" : True}
+			{"title" : "Бусидо", "author" : "Юдзан Дайдодзи", "date" : "1998", "read" : False},
+			{"title" : "Хагакурэ", "author" : "Юдзан Дайдодзи", "date" : "2000", "read" : False},
+			{"title" : "Метро 2033", "author" : "Дмитрий Глуховский", "date" : "2005", "read" : True}
 ]
 
 def start():
 	print("\n         📚 Моя Библиотека\n")
-	print("1. Вывести информацию о книгах")
-	print("2. Добавить книгу")
-	print("3. Изменить статус прочтения")
-	print("4. Удалить книгу")
+	print("1. Книги")
+	print("2. Статистика")
+	print("3. Добавить книгу")
+	print("4. Изменить статус прочтения")
+	print("5. Удалить книгу")
 	print("-------------------------------------")
-	print("5. Выйти из Библиотеки")
+	print("6. Выйти из Библиотеки")
 	print("-------------------------------------")
 
 def read_status(is_read):
@@ -29,19 +28,23 @@ def info_book(the_book, number_book):
 	print()
 	print(f"Название: {the_book['title']}")
 	print(f"Автор: {the_book['author']}")
-	print(f"Год: {the_book['year']}")
+	print(f"Год: {the_book['date']}")
 	print(f"Прочитано: {read_status(the_book['read'])}")
 
-def display_books():
-	pass
+def is_duplicate(library, title, author):
+	for i in range(0, len(library)):
+		book = library[i]
+
+		if book['title'] == title and book['author'] == author:
+			return True
+	
+	return False
 
 start()
 
 select_option = -1
 
-while select_option != 5:
-
-	number_book = 0
+while select_option != 6:
 
 	# Вывести информацию о книгах
 	if select_option == 1:
@@ -55,6 +58,7 @@ while select_option != 5:
 
 		# Вывести все книги
 		if select_filter == 1:
+			number_book = 0
 			for i in range(0, len(THE_LIBRARY)):
 				number_book += 1
 				info_book(THE_LIBRARY[i], number_book)
@@ -135,8 +139,38 @@ while select_option != 5:
 					sleep(0.5)
 				print("---------------------------")
 
-	# Добавить книгу
+	# Статистика
 	elif select_option == 2:
+		print("\n1. Авторы из Библиотеки:\n")
+		print(*sorted(set([THE_LIBRARY[i]['author'] for i in range(0, len(THE_LIBRARY))])), sep="\n")
+		print("----------------------")
+		input("Нажмите Enter чтобы продолжить...")
+		sleep(1)
+		print("\n2. Книги, отсортированные по году издания:\n")
+		
+		dates = []
+		transporter = []
+
+		for i in range(0, len(THE_LIBRARY)):
+			transporter.append(int(THE_LIBRARY[i]['date']))
+			transporter.append(THE_LIBRARY[i]['title'])
+			
+			dates.append(tuple(transporter))
+			
+			transporter = []
+		
+		print(*sorted(dates), sep="\n")
+		print("----------------------")
+		input("Нажмите Enter чтобы продолжить...")
+		sleep(1)
+		print('\n3. Количество прочитанных и непрочитанных книг:\n')
+		print("Прочитанных:", len([(THE_LIBRARY[i]['title']) for i in range(0, len(THE_LIBRARY)) if THE_LIBRARY[i]['read']]), end=", ")
+		print("Непрочитанных:", len([(THE_LIBRARY[i]['title']) for i in range(0, len(THE_LIBRARY)) if THE_LIBRARY[i]['read'] == False]))
+		input("Нажмите Enter чтобы продолжить...")
+		sleep(1)
+
+	# Добавить книгу
+	elif select_option == 3:
 		name = input("Введите название новой книги: ")
 		author = input("Автор новой книги: ")
 		date_book = input("Дата выхода: ")
@@ -157,12 +191,16 @@ while select_option != 5:
 				else:
 					is_read = False
 
-				new_book = {"title" : name, "author" : author, "year" : date_book, "read" : is_read}
-				THE_LIBRARY.append(new_book)
-				print("\n📗 Книга успешно добавлена")
-				sleep(0.5)
+				if is_duplicate(THE_LIBRARY, name, author):
+					print("📚 Книга уже есть в Библиотеке!")
+				else:
+					new_book = {"title" : name, "author" : author, "date" : date_book, "read" : is_read}
+					THE_LIBRARY.append(new_book)
+					print("\n📗 Книга успешно добавлена")
+					sleep(0.5)
+					
 	# Изменить статус о прочтении
-	elif select_option == 3:
+	elif select_option == 4:
 		for i in range(0, len(THE_LIBRARY)):
 			print(f"📔 Название: «{THE_LIBRARY[i]['title']}»")
 			print(f"Прочитано: {read_status(THE_LIBRARY[i]['read'])}\n")
@@ -191,7 +229,7 @@ while select_option != 5:
 		print("Примечание: Если книга была 'прочитана', статус изменится на 'Непрочитано' и наоборот.\n")
 
 	# Удалить книгу
-	elif select_option == 4:
+	elif select_option == 5:
 
 		found_book = False
 		
