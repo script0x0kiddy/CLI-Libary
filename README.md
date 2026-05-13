@@ -45,7 +45,7 @@
 #### Improvements and additional changes:
 
 - ✅ Refactoring was carried out
-
+#
 ### Beta v0.5
 
 #### Improvements and additional changes:
@@ -99,7 +99,7 @@
 #### Улучшения и дополнительные изменения:
 
 - ✅ Был проведён Рефакторинг
-
+#
 ### Бета v0.5
 #### Улучшения и дополнительные изменения:
 
